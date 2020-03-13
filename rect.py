@@ -14,7 +14,10 @@ def slirp(p1, p2, num = 1, r = None):
 
     return out
 
-def rect(x1 = 0, y1 = 0, width = 0.2, height = 0.2, sidePoints = 10):
+def dwell(p, num):
+    return [p for i in range(num)]
+
+def rect(x1 = 0, y1 = 0, width = 0.2, height = 0.2, sidePoints = 20):
     out = []
 
     p1 = Point(x1, y1)
@@ -22,15 +25,16 @@ def rect(x1 = 0, y1 = 0, width = 0.2, height = 0.2, sidePoints = 10):
     p3 = Point(x1 + width, y1 + height)
     p4 = Point(x1, y1 + height)
 
-    out.append(p1)
+    dwellNum = 3
+    out.extend(dwell(p1, dwellNum))
     out.extend(slirp(p1, p2, sidePoints))
-    out.append(p2)
+    out.extend(dwell(p2, dwellNum))
     out.extend(slirp(p2, p3, sidePoints))
-    out.append(p3)
+    out.extend(dwell(p3, dwellNum))
     out.extend(slirp(p3, p4, sidePoints))
-    out.append(p4)
+    out.extend(dwell(p4, dwellNum))
     out.extend(slirp(p4, p1, sidePoints))
-    out.append(p1)
+    out.extend(dwell(p1, dwellNum))
 
     return out
 

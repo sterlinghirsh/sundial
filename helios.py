@@ -136,11 +136,14 @@ class Point:
         brightness = int(max(0, min(0xFF, self.r * 0xFF)))
         return HeliosPoint(intx,inty,brightness,brightness,brightness, 0xFF)
 
+    def withColor(self, r):
+        return Point(self.x, self.y, r)
+
 class Frame:
     def __init__(self, firstPoint):
         self.points = [firstPoint]
     
-    def append(self, newPoints, blankGap = 10, dwellStart = 0, dwellEnd = 0):
+    def append(self, newPoints, blankGap = 5, dwellStart = 3, dwellEnd = 3):
         if len(newPoints) == 0:
             return
 
@@ -150,12 +153,16 @@ class Frame:
             self.blankSlirp(lastPoint, nextPoint, blankGap)
 
         for i in range(dwellStart):
-            self.points.append(newPoints[0])
+            self.points.append(newPoints[0].withColor(0))
+        for i in range(dwellStart):
+            self.points.append(newPoints[0].withColor(1))
 
         self.points.extend(newPoints)
 
         for i in range(dwellEnd):
-            self.points.append(newPoints[-1])
+            self.points.append(newPoints[-1].withColor(1))
+        for i in range(dwellEnd):
+            self.points.append(newPoints[-1].withColor(0))
 
     def blankSlirp(self, p1, p2, numBlanks):
         for i in range(numBlanks):

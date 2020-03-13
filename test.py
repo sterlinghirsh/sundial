@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import time
+import math
 from wigglecircle import wiggleCircle
 from rect import rect
 import helios
@@ -47,9 +48,13 @@ try:
 
         #frame.append(wiggleCircle(elapsed))
 
-        frame.append(wiggleCircle(elapsed, timeFactor = 1.2, timeOffset = 2.0, numPoints = 500, baseRadius = 0.3, circleSpin = -0.1, blanks=2.0, waveSize = 0))
+        frame.append(wiggleCircle(elapsed, timeFactor = 1.2,
+         timeOffset = 2.0, numPoints = 500, baseRadius = 0.3,
+         circleSpin = -0.1, blanks=2.0, waveSize = 0))
 
-        frame.append(rect())
+        rectX = math.sin(elapsed) * 0.3
+        rectY = math.cos(elapsed) * 0.3
+        frame.append(rect(rectX, rectY))
 
         statusAttempts = Helios.waitForDac()
         Helios.draw(frame)
