@@ -3,6 +3,7 @@
 
 import time
 from wigglecircle import wiggleCircle
+from rect import rect
 import helios
 
 msgOutputInterval = 100
@@ -46,7 +47,9 @@ try:
 
         #frame.append(wiggleCircle(elapsed))
 
-        frame.append(wiggleCircle(elapsed, timeFactor = 1.2, timeOffset = 2.0, numPoints = 50, baseRadius = 0.3, circleSpin = -0.1, blanks=0, waveSize = 0, blankThreshold = -0.8), blankGap = 0)
+        frame.append(wiggleCircle(elapsed, timeFactor = 1.2, timeOffset = 2.0, numPoints = 500, baseRadius = 0.3, circleSpin = -0.1, blanks=2.0, waveSize = 0))
+
+        frame.append(rect())
 
         statusAttempts = Helios.waitForDac()
         Helios.draw(frame)

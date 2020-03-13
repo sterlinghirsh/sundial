@@ -140,7 +140,7 @@ class Frame:
     def __init__(self, firstPoint):
         self.points = [firstPoint]
     
-    def append(self, newPoints, blankGap = 100, dwellStart = 0, dwellEnd = 0):
+    def append(self, newPoints, blankGap = 10, dwellStart = 0, dwellEnd = 0):
         if len(newPoints) == 0:
             return
 
