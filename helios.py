@@ -6,6 +6,8 @@ NB: If you haven't set up udev rules you need to use sudo to run the program for
 import ctypes
 import time
 
+import Queue
+
 #Define point structure
 class HeliosPoint(ctypes.Structure):
     #_pack_=1
@@ -45,12 +47,37 @@ class DAC:
 
         self.attemptCounts = []
         self.waitTimes = []
+
+        self.colorDelay = 0
+        self.xDelay = self.yDelay = 0
+
+        self.delayedColors = Queue.Queue()
+        while self.delayedColors.qsize() < self.colorDelay:
+            self.delayedColors.put(0)
+
+        self.delayedX = Queue.Queue()
+        while self.delayedX.qsize() < self.xDelay:
+            self.delayedX.put(0)
+
+        self.delayedY = Queue.Queue()
+        while self.delayedY.qsize() < self.yDelay:
+            self.delayedY.put(0)
     
     def __del__(self):
         HeliosLib.CloseDevices()
 
     def getFrame(self):
         return Frame(self.lastPoint)
+
+    def delayColors(self, points):
+        numPoints = len(points)
+        for i in range(numPoints):
+            self.delayedX.put(points[i].x)
+            self.delayedY.put(points[i].y)
+            self.delayedColors.put(points[i].r)
+            points[i].x = self.delayedX.get()
+            points[i].y = self.delayedY.get()
+            points[i].r = self.delayedColors.get()
 
     def draw(self, frame):
         points = frame.points
@@ -62,6 +89,8 @@ class DAC:
             #print("TOO MANY POINTS:", numPoints)
             numPoints = HELIOS_MAX_POINTS
             points = points[:HELIOS_MAX_POINTS]
+
+        #self.delayColors(points)
 
         self.lastPoint = points[-1]
 
