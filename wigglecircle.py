@@ -29,5 +29,5 @@ def wiggleCircle(elapsed, timeFactor = 1.0, timeOffset = 0.0, numPoints = 200, s
 
         on = 1 if math.cos(blanks * position * rads) > blankThreshold else 0
         out.append(Point(x, y, on))
-    
+
     return out

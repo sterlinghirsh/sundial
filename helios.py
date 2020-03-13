@@ -52,7 +52,6 @@ class DAC:
     def getFrame(self):
         return Frame(self.lastPoint)
 
-
     def draw(self, frame):
         points = frame.points
         numPoints = len(points)
@@ -63,6 +62,8 @@ class DAC:
             #print("TOO MANY POINTS:", numPoints)
             numPoints = HELIOS_MAX_POINTS
             points = points[:HELIOS_MAX_POINTS]
+
+        self.lastPoint = points[-1]
 
         frameType = HeliosPoint * numPoints
         frame = frameType();
@@ -110,7 +111,7 @@ class Frame:
     def __init__(self, firstPoint):
         self.points = [firstPoint]
     
-    def append(self, newPoints, blankGap = 5, dwellStart = 1, dwellEnd = 1):
+    def append(self, newPoints, blankGap = 100, dwellStart = 0, dwellEnd = 0):
         if len(newPoints) == 0:
             return
 
@@ -129,8 +130,8 @@ class Frame:
 
     def blankSlirp(self, p1, p2, numBlanks):
         for i in range(numBlanks):
-            f1 = (i + 0.5) / float(numBlanks)
-            f2 = 1 - f1
+            f2 = (i + 0.5) / float(numBlanks)
+            f1 = 1 - f2
             x = (p1.x * f1) + (p2.x * f2)
             y = (p1.y * f1) + (p2.y * f2)
             self.points.append(Point(x, y, 0))
