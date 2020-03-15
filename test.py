@@ -56,6 +56,9 @@ try:
         rectY = math.cos(elapsed) * 0.3
         frame.append(rect(rectX, rectY))
 
+        boundingBox = rect(-1, -1, 2, 2)
+        frame.append(boundingBox)
+
         statusAttempts = Helios.waitForDac()
         Helios.draw(frame)
 
