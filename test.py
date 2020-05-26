@@ -2,75 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import time
-import math
 from wigglecircle import wiggleCircle
 from rect import rect
 import helios
 from helios import Point
 
-import matplotlib.image as mpimg
-
-img = mpimg.imread('clementine.png')
-
-def image(rowNum, scaleX = 1.0, scaleY = 1.0,
- colorMin = 0.2, colorMax = 1.0,
- xSkipRatio = 1.0, ySkipRatio = 1.0,
- brightnessDwell = 1):
-   h = len(img)
-   w = len(img[0])
-   out = []
-
-   rowNumPostSkip = int(rowNum * ySkipRatio)
-   invertYOrder = int(rowNumPostSkip / h) % 2 == 0
-   y = rowNumPostSkip % h
-
-   if invertYOrder:
-      y = -1 + h - y
-      y = int(min(h-1, y + ySkipRatio / 2.0))
-
-   row = img[-y]
-
-   xOrder = range(int(w / xSkipRatio))
-   #if rowNum % 2 == 1:
-   #   xOrder = reversed(xOrder)
-
-   aspectRatio = h / float(w)
-
-   if h > w:
-      scaleX *= (1 / aspectRatio)
-   else :
-      scaleY *= aspectRatio
-
-   colorRange = colorMax - colorMin
-   colorExpansion = 1/float(colorRange) if colorRange != 0 else 1
-
-
-   #for x in range(w):
-   for x in xOrder:
-      x = int(x * xSkipRatio)
-      xf = scaleX * ((x / float(w)) - 0.5)
-      yf = scaleY * ((y / float(h)) - 0.5)
-
-      pixel = row[x]
-      color = (pixel[0] + pixel[1] + pixel[2]) / 3.0
-
-      color -= colorMin
-      color *= colorExpansion
-
-      color = math.ceil(color * brightnessDwell)
-
-      if color < 2:
-         out.append(Point(xf, yf, 0))
-      if color < 1:
-         out.append(Point(xf, yf, 0))
-         out.append(Point(xf, yf, 0))
-
-      while color >= 1:
-         out.append(Point(xf, yf, 1))
-         color -= 1
-
-   return out
-
+from raster import Raster
 
 msgOutputInterval = 100
 
@@ -88,6 +25,7 @@ try:
         'timeStep': 0.01,
         '
         """
+    clem = Raster('clementine.png')
     frameNum = 0
     startTime = time.time()
     lastTime = startTime
@@ -123,7 +61,7 @@ try:
 
         boundingBox = rect(-1, -1, 2, 2)
 
-        frame.append(image(frameNum, scaleX = 1.0, scaleY = 1.0,
+        frame.append(clem.getPoints(frameNum, scaleX = 1.0, scaleY = 1.0,
          ySkipRatio = 4.0, xSkipRatio = 2.0, brightnessDwell = 8),
          blankGap = 0, dwellStart = 0, dwellEnd = 0)
 
