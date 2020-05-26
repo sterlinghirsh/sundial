@@ -62,7 +62,7 @@ class DAC:
         self.delayedY = Queue.Queue()
         while self.delayedY.qsize() < self.yDelay:
             self.delayedY.put(0)
-    
+
     def __del__(self):
         HeliosLib.CloseDevices()
 
@@ -117,18 +117,18 @@ class DAC:
 
         if (statusAttempts >= 512):
             print("ERROR: waiting a long time for DAC.", statusAttempts, "attempts in", waitTime, "seconds")
-        
+
         self.attemptCounts.append(statusAttempts)
         self.waitTimes.append(waitTime)
 
         return statusAttempts
 
 class Point:
-    def __init__(self, x, y, r = 1):
+    def __init__(self, x, y, r = 1.0):
         self.x = x
         self.y = y
         self.r = r
-    
+
     def getHeliosPoint(self):
         intx = int(max(0, min(xyMax, round(self.x * xyHalf)+xyHalf)))
         inty = int(max(0, min(xyMax, round(self.y * xyHalf)+xyHalf)))
@@ -142,7 +142,7 @@ class Point:
 class Frame:
     def __init__(self, firstPoint):
         self.points = [firstPoint]
-    
+
     def append(self, newPoints, blankGap = 5, dwellStart = 3, dwellEnd = 3):
         if len(newPoints) == 0:
             return
