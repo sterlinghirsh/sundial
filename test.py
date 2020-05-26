@@ -8,6 +8,7 @@ import helios
 from helios import Point
 
 from raster import Raster
+from circle import circle
 
 msgOutputInterval = 100
 
@@ -59,11 +60,13 @@ try:
         #rectY = math.cos(elapsed) * 0.3
         #frame.append(rect(rectX, rectY))
 
-        boundingBox = rect(-1, -1, 2, 2)
+        boundingBox = rect(-1, -1, 2, 2, 200)
 
-        frame.append(clem.getPoints(frameNum, scaleX = 1.0, scaleY = 1.0,
-         ySkipRatio = 4.0, xSkipRatio = 2.0, brightnessDwell = 8),
-         blankGap = 0, dwellStart = 0, dwellEnd = 0)
+        #frame.append(clem.getPoints(frameNum, scaleX = 1.0, scaleY = 1.0,
+        # ySkipRatio = 4.0, xSkipRatio = 2.0, brightnessDwell = 8),
+        # blankGap = 0, dwellStart = 0, dwellEnd = 0)
+
+        frame.append(circle())
 
         frame.append(boundingBox)
 
