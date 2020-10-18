@@ -9,6 +9,7 @@ from helios import Point
 
 from raster import Raster
 from circle import circle
+from clock import Clock
 
 msgOutputInterval = 100
 
@@ -27,6 +28,7 @@ try:
         '
         """
     clem = Raster('clementine.png')
+    clock = Clock()
     frameNum = 0
     startTime = time.time()
     lastTime = startTime
@@ -66,9 +68,10 @@ try:
         # ySkipRatio = 4.0, xSkipRatio = 2.0, brightnessDwell = 8),
         # blankGap = 0, dwellStart = 0, dwellEnd = 0)
 
-        frame.append(circle())
+        #frame.append(circle())
+        frame.append(clock.getPoints(curTime))
 
-        frame.append(boundingBox)
+        #frame.append(boundingBox)
 
         statusAttempts = Helios.waitForDac()
         Helios.draw(frame)
